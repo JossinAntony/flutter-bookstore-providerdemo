@@ -10,7 +10,7 @@ class Book{
 class BookModel extends ChangeNotifier{
   List<Book> booklist = [];
 
-  addBookToModel(String title, String author, double price){
+  addBookToModel({String title, String author, double price}){
     booklist.add(Book(title: title, author: author,price: price));
     notifyListeners();
   }
