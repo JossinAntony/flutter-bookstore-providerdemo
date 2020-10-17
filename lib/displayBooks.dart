@@ -13,102 +13,100 @@ class DisplayBooks extends StatelessWidget {
       appBar: AppBar(
         title: Text('Bookstore'),
       ),
-      body: SingleChildScrollView(
-        child:
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    style: BorderStyle.solid,
-                    color: Colors.grey,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  style: BorderStyle.solid,
+                  color: Colors.grey,
                 ),
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        hintText: 'Enter the book title',
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-
-                    TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        hintText: 'Enter the authorname',
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-
-                    RaisedButton.icon(
-                      color: Colors.blueAccent,
-                        icon: Icon(Icons.add),
-                        label: Text('ADD'),
-                        onPressed: (){
-                        Provider.of<BookModel>(context, listen: false).addBookToModel(//add to model
-                            title: titleCntrl.text,
-                            author: authorCntrl.text,
-                            price: double.parse(priceCntrl.text),
-                        );
-                        },
-                    )
-                  ],
-                ),
+                borderRadius: BorderRadius.circular(12),
               ),
-
-              SizedBox(height: 3),
-              Divider(color: Colors.black),
-              SizedBox(height: 3),
-
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    style: BorderStyle.solid,
-                    color: Colors.grey,
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: titleCntrl,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      hintText: 'Enter the book title',
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Consumer<BookModel>(builder: (context, model, child){
-                  return ListView.builder(
-                    itemCount: model.booklist.length,
-                      itemBuilder: (context, index){
-                        return Card(
-                          child: ListTile(
-                            leading: Icon(Icons.book),
-                            title: Text(model.booklist[index].title),
-                            subtitle: Text(model.booklist[index].author),
-                          ),
-                        );
-                      }
+
+                  SizedBox(height: 10),
+
+                  TextField(
+                    controller: authorCntrl,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      hintText: 'Enter the authorname',
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+
+                  TextField(
+                    controller: priceCntrl,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      hintText: 'Enter the price',
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
+
+                  RaisedButton.icon(
+                    color: Colors.blueAccent,
+                      icon: Icon(Icons.add),
+                      label: Text('ADD'),
+                      onPressed: (){
+                      Provider.of<BookModel>(context, listen: false).addBookToModel(//add to model
+                          title: titleCntrl.text,
+                          author: authorCntrl.text,
+                          price: double.parse(priceCntrl.text),
                       );
-                }),
+                      print(titleCntrl.text);
+                      },
+                  )
+                ],
               ),
-            ],
-          ),
+            ),
+
+            SizedBox(height: 3),
+            Divider(color: Colors.black),
+            SizedBox(height: 3),
+
+            Expanded(
+              child: Consumer<BookModel>(builder: (context, model, child){
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: model.booklist.length,
+                    itemBuilder: (context, index){
+                      return Card(
+                        child: ListTile(
+                          leading: Icon(Icons.book),
+                          title: Text(model.booklist[index].title, style: TextStyle(fontSize:12.5)),
+                          subtitle: Text('Author:' + model.booklist[index].author + '\nPrice: ${model.booklist[index].price}'),
+                        ),
+                      );
+                    }
+                    );
+              }),
+            ),
+          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        //onPressed: () {
-/*          Provider.of<BookModel>(context, listen: false).addBookToModel(
-              title: titleCntrl.text,
-              author: authorCntrl.text,
-              price: priceCntrl.text);
-        },*/
-        child: Icon(Icons.add),
-      ),
+
     );
   }
 }
